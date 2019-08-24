@@ -43,7 +43,6 @@ A GET request to the same endpoint returns a geoJSON FeatureCollection with each
       "displayTime": "16:07:12",
       "speed": "70",
       "climbRate": "1",
-      "active": "Y"
     }
   },
   {
@@ -59,7 +58,6 @@ A GET request to the same endpoint returns a geoJSON FeatureCollection with each
       "displayTime": "16:07:12",
       "speed": "30",
       "climbRate": "0",
-      "active": "Y"
     }
   }
   ]
@@ -79,9 +77,8 @@ The system uses an in memory object to store the latest position and other prope
 | altitude | Number | Y | Drone's elevation above sea level **(not ground level)**
 | speed | Number | Y | Current speed in Km/h
 | climbRate | Number | Y |Drone's rate of climb in meters per second. Negative numbers denote decent
-| active | Boolean | Y | Is the drone flying at the moment?
 
-## POST Processing
+## POST and PUT Processing
 
 ### Validation
 For each POST request the system validates the input against a JSON schema (https://www.npmjs.com/package/express-json-validator-middleware). It returns a 400 (Bad Request) response if the schema does not validate.  Next it checks the epoch timestamp from the request against the current in-memory epoch for the drone.  It returns a 204 (No Content) response if the request epoch is earlier than the in-memory one.  
