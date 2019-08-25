@@ -6,11 +6,12 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
   <script>
+  BASE_URL = window.location.origin;
   function launchDrone(droneId, lat, lon, alt) {
     var d = new Date();
     var epoch = Math.round(d.getTime() / 1000);
 
-    var url = 'http://localhost:3200/active';
+    var url = BASE_URL + '/active';
     var data = '{"id": "'+ droneId +'", "epoch": '+ epoch +', "lat":'+ lat +' , "lon": '+lon+', "alt": '+alt+'}';
 
     fetch(url, {
@@ -28,7 +29,7 @@
     var d = new Date();
     var epoch = Math.round(d.getTime() / 1000);
 
-    var url = 'http://localhost:3200/active/'+ droneId;
+    var url = BASE_URL + '/active/'+ droneId;
     var data = '{"id": "'+ droneId +'", "epoch": '+ epoch +', "lat":'+ lat +' , "lon": '+lon+', "alt": '+alt+'}';
 
     fetch(url, {
@@ -43,7 +44,7 @@
   }
 
   function deleteDrone(droneId) {
-    var url = 'http://localhost:3200/active/'+ droneId;
+    var url = BASE_URL + '/active/'+ droneId;
     fetch(url, {
       method: 'DELETE'
     }).then(res => document.getElementById("responseStatus").textContent = 'HTTP Response:' + res.status)
@@ -52,7 +53,7 @@
   }
 
   function updatePage() {
-    fetch('http://localhost:3200/active')
+    fetch(BASE_URL + '/active')
     .then(function(response) {
       return response.json();
     }).then(function(featureCollection) {

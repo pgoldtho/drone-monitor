@@ -102,4 +102,7 @@ An MQTT wrapper could be added as a separate module if HTTP requests prove to be
 
 ## Running the Application
 
-Use `npm start` to launch the application then navigate to http://localhost:3200/ to view the UI. Running  `npm test` will execute a series of regression tests for the REST APIs.
+Use `npm start` to launch the application then navigate to http://localhost:3200/ to view the UI. Running  `npm test` will execute a series of regression tests for the REST APIs.  
+
+### Running in a Docker Container
+Build the image e.g. `docker build -t pgoldtho/drone-app .` then run e.g. `docker run -p 32000:3200 -d pgoldtho/drone-app` and navigate to the assigned port (http://localhost:32000/ in the previous example).
