@@ -24,7 +24,7 @@ The central server exposes a REST endpoint.  Drones POST their location to it as
 ```
 Where *id* is the FAA identifier, *epoch* is the number of seconds since Jan 1, 1970, *lat* is the current latitude, *lon* is the current longitude and *alt* is the altitude in meters.  The system assumes latitude and longitude coordinates are expressed using the WGS84 coordinate system.
 
-A GET request to the same endpoint returns a geoJSON FeatureCollection with each drone position described using Point geometry and its
+A GET request to the same endpoint returns a geoJSON FeatureCollection with each drone position described using Point geometry.
 
 ```
 {
@@ -78,13 +78,14 @@ The system uses an in memory object to store the latest position and other prope
 | speed | Number | Y | Current speed in Km/h
 | climbRate | Number | Y |Drone's rate of climb in meters per second. Negative numbers denote decent
 
-## POST and PUT Processing
+## POST, PUT and DELETE Processing
+A POST request is submitted to the "active drones" endpoint to record a drone launch. PUT requests are used to update the drone's location. A DELETE request is sent to the active drones endpoint to record the end of a flight.
 
 ### Validation
-For each POST request the system validates the input against a JSON schema (https://www.npmjs.com/package/express-json-validator-middleware). It returns a 400 (Bad Request) response if the schema does not validate.  Next it checks the epoch timestamp from the request against the current in-memory epoch for the drone.  It returns a 204 (No Content) response if the request epoch is earlier than the in-memory one.  
+For each POST request the system validates the input against a JSON schema (https://www.npmjs.com/package/express-json-validator-middleware). It returns a 400 (Bad Request) response if the schema does not validate.  Next it checks the epoch timestamp from the request against the current in-memory epoch for the drone.  It returns a 204 (No Content) response if the request epoch is earlier than the in-memory one.  This allows for http requests that arrive out of sequence.
 
 ### Derived Fields
-The drone's speed is calculated by taking the distance between its current location and the location recorded in memory (https://stackoverflow.com/questions/639695/how-to-convert-latitude-or-longitude-to-meters) divided by duration (the difference between the 2 timestamps).  The result is multiplied by 3.6 to produce a value in Km/h.  The climbRate is calculated by subtracting the previous altitude from the current one divided by the duration. The active flag is set to false when the drone is within 50m of a company facility and the altitude of the drone is within 2m of the elevation of that facility.
+The drone's speed is calculated by taking the distance between its current location and the location recorded in memory (https://stackoverflow.com/questions/639695/how-to-convert-latitude-or-longitude-to-meters) divided by duration (the difference between the 2 timestamps).  The result is multiplied by 3.6 to produce a value in Km/h.  The climbRate is calculated by subtracting the previous altitude from the current one divided by the duration.
 
 The in-memory value is updated once the derived fields have been calculated.  A 201 (Created) response is returned.
 
@@ -98,3 +99,7 @@ The UI highlights drones that have not been moving for more than 10 seconds (the
 Cellular modem connections are expensive, therefore we need to make sure the drones report back their location using as little data as possible. Drones should be configured to POST their location using HTTPS every 30 seconds.  
 
 An MQTT wrapper could be added as a separate module if HTTP requests prove to be unreliable or overly expensive.
+
+## Running the Application
+
+Use `npm start` to launch the application then navigate to http://localhost:3200/ to view the UI. Running  `npm test` will execute a series of regression tests for the REST APIs.

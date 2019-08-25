@@ -1,0 +1,125 @@
+<html>
+<head>
+  <title>Peter Goldthorp's Drones</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  <script>
+  function launchDrone(droneId, lat, lon, alt) {
+    var d = new Date();
+    var epoch = Math.round(d.getTime() / 1000);
+
+    var url = 'http://localhost:3200/active';
+    var data = '{"id": "'+ droneId +'", "epoch": '+ epoch +', "lat":'+ lat +' , "lon": '+lon+', "alt": '+alt+'}';
+
+    fetch(url, {
+      method: 'POST',
+      body:  data,
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => document.getElementById("responseStatus").textContent = 'HTTP Response:' + res.status)
+    .catch(error => console.error('Error:', error));
+    updatePage();
+  }
+
+  function updateDrone(droneId, lat, lon, alt) {
+    var d = new Date();
+    var epoch = Math.round(d.getTime() / 1000);
+
+    var url = 'http://localhost:3200/active/'+ droneId;
+    var data = '{"id": "'+ droneId +'", "epoch": '+ epoch +', "lat":'+ lat +' , "lon": '+lon+', "alt": '+alt+'}';
+
+    fetch(url, {
+      method: 'PUT',
+      body:  data,
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => document.getElementById("responseStatus").textContent = 'HTTP Response:' + res.status)
+    .catch(error => console.error('Error:', error));
+    updatePage();
+  }
+
+  function deleteDrone(droneId) {
+    var url = 'http://localhost:3200/active/'+ droneId;
+    fetch(url, {
+      method: 'DELETE'
+    }).then(res => document.getElementById("responseStatus").textContent = 'HTTP Response:' + res.status)
+    .catch(error => console.error('Error:', error));
+    updatePage();
+  }
+
+  function updatePage() {
+    fetch('http://localhost:3200/active')
+    .then(function(response) {
+      return response.json();
+    }).then(function(featureCollection) {
+      document.getElementById("droneList").innerHTML = "";
+
+      featureCollection.features.forEach(function(drone){
+        if ((drone.properties.speed < 0.36)
+        && (drone.properties.climbRate > -0.1)
+        && (drone.properties.climbRate < 0.1) ) {
+          document.getElementById("droneList").innerHTML +=
+          "<tr style='background-color:#fcf8e3'><td>"
+          + drone.properties.id +"</td><td>"
+          + drone.properties.displayTime + "</td><td>"
+          + drone.geometry.coordinates[0] + "</td><td>"
+          + drone.geometry.coordinates[1] + "</td><td>"
+          + drone.geometry.coordinates[2] + "</td><td>"
+          + drone.properties.speed + "</td><td>"
+          + drone.properties.climbRate + "</td></tr>"
+        } else {
+          document.getElementById("droneList").innerHTML +=
+          "<tr><td>" + drone.properties.id +"</td><td>"
+          + drone.properties.displayTime + "</td><td>"
+          + drone.geometry.coordinates[0] + "</td><td>"
+          + drone.geometry.coordinates[1] + "</td><td>"
+          + drone.geometry.coordinates[2] + "</td><td>"
+          + drone.properties.speed + "</td><td>"
+          + drone.properties.climbRate + "</td></tr>"
+        }
+      });
+
+    });
+  }
+  updatePage();
+  </script>
+
+</head>
+<body>
+  <div style="margin:100px;">
+
+    <div class="jumbotron"  style="padding:40px;" id="controlPanel">
+      <h3>Drone Control Panel</h3>
+      <p>Use this form to emulate http requests from the drones</p>
+      <form>
+        Drone ID: <input type="text" id="droneId" value="FA929VNFRL" name="droneId"/>
+      <a class="btn btn-primary btn-lg" href="#" onclick="launchDrone(document.getElementById('droneId').value, document.getElementById('lat').value, document.getElementById('lon').value, document.getElementById('alt').value);" role="button">Launch Drone</a>
+      <a class="btn btn-primary btn-lg" href="#" onclick="deleteDrone(document.getElementById('droneId').value);" role="button">Delete Drone</a>
+<br/>
+       Latitude: <input type="text" id="lat" value="28.6589651" name="lat"/>
+       Longitude:  <input type="text" id="lon" value="-80.8488282" name="lon"/>
+       Altitude: <input type="text" id="alt" value="0" name="alt"/>
+       <a class="btn btn-primary btn-lg" href="#"
+       onclick="updateDrone(document.getElementById('droneId').value, document.getElementById('lat').value, document.getElementById('lon').value, document.getElementById('alt').value);"
+       role="button">Update Drone</a>
+    </form>
+    <p id="responseStatus"/>
+    </div>
+
+
+    <div class="jumbotron"  style="padding:40px;">
+      <h3>Drone Locations</h3>
+      <table class="table table-bordered">
+        <thead>
+        <tr><th>ID</th><th>Time</th><th>Latitude</th><th>Longitude</th><th>Altitude (m)</th><th>Speed (km/h)</th><th>Rate of Climb (m/s)</th>
+        </thead>
+        <tbody id="droneList"></tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
