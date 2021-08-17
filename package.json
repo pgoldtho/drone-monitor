@@ -1,5 +1,5 @@
 {
-  "name": "balena-assignment",
+  "name": "drone-monitor",
   "version": "1.0.0",
   "description": "Drone tracking application",
   "main": "app.js",
@@ -17,8 +17,8 @@
     "node-cache": "^4.2.1"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "mocha": "^6.2.0",
-    "request": "^2.88.0"
+    "chai": "^4.3.4",
+    "mocha": "^9.0.3",
+    "request": "^2.88.2"
   }
 }
