@@ -8,9 +8,9 @@ jobs:
         uses: actions/setup-node@v2.4.0
         with:
         # Set always-auth in npmrc
-            always-auth: # optional, default is false
+            always-auth: false # optional, default is false
         # Version Spec of the version to use.  Examples: 12.x, 10.15.1, >=10.15.0
-            node-version: # optional
+            node-version: 12.x # optional
         # Target architecture for Node to use. Examples: x86, x64. Will use system architecture by default.
             architecture: # optional
         # Set this option if you want the action to check for the latest available version that satisfies the version spec
@@ -25,5 +25,4 @@ jobs:
             cache: # optional
         # Used to specify the path to a dependency file: package-lock.json, yarn.lock, etc. Supports wildcards or a list of file names for caching multiple dependencies.
             cache-dependency-path: # optional
-        # Deprecated. Use node-version instead. Will not be supported after October 1, 2019
-            version: # optional
+
