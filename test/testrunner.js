@@ -1,5 +1,5 @@
 // **************************************************************
-// End to End CRUD test for REST APIs
+// End to End CRUD test for REST APIs.
 // Note: the tests run in sequence and the failure of an early test may
 // impact the result of laters ones.
 // **************************************************************
