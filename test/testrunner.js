@@ -24,7 +24,7 @@ it('POST invalid schema should fail with 400 status', (done) => {
       headers: HEADERS,
       json: true
     }, (error, response, body) => {
-      expect(response.statusCode).to.equal(401);
+      expect(response.statusCode).to.equal(400);
       done();
     }
   );
