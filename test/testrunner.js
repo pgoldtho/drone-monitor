@@ -135,7 +135,7 @@ it ('GET invalid drone id should return 404', (done) => {
       method: 'get',
       url: BASE_URL + '/xxFA997PORSC',
     }, (error, response, body) => {
-      expect(response.statusCode).to.equal(404);
+      expect(response.statusCode).to.equal(403);
       done();
     }
   );
