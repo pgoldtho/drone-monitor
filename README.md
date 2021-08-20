@@ -1,6 +1,6 @@
 # Drone Monitor
 
-A company has a number of drones flying around the country. This system tracks the location of every drone in real-time.  Each drone is identified by its FAA registration number or tail number (if greater than 55 lb.) and  reports its geo-location coordinates to a central server in real-time through a cellular modem connection.
+A company has a number of drones flying around the country. This system tracks the location of every drone in real-time.  Each drone is identified by its FAA registration number or tail number (if greater than 55 lb.) and reports its geo-location coordinates to a central server in real-time through a cellular modem connection.
 
 The results are displayed in a simple web application which displays the list of active drones as a table, by their unique identifiers, along with their location and current speed.
 
