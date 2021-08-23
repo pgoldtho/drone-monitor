@@ -13,7 +13,7 @@ The results are displayed in a simple web application which displays the list of
 
 The table highlights drones that have not been moving for more than 10 seconds (i.e. the drone sent updates, but didn't move more that 1 meter).  Inactive drones are not displayed.  A drone is considered inactive after it lands at a company facility.  
 
-The central server exposes a REST endpoint.  Drones POST their location to it as a JSON document similar to the one shown below
+The central server exposes a REST endpoint.  Drones POST their location to it as a JSON document similar to the one shown below.
 
 ```
 { "id": "FA929VNFRL",
