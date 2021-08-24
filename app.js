@@ -180,7 +180,7 @@ app.use(function(err, req, res, next) {
     else next(err); // pass error on if not a validation error
 });
 
-// Serve single page application on '/'
+// Serve single page application on '/' 
 app.get('/', (req,res) => {
   res.sendFile('index.html', { root: __dirname });
 });
